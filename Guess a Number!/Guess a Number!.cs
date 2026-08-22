@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Runtime.CompilerServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -7,24 +8,29 @@ namespace Guess_a_Number_
 {
     class Program
     {
-            static async Task Main()
+        static async Task Typetext(string text, byte delay)
+        {
+            foreach (char c in text)
+            {
+                Console.Write(c);
+                await Task.Delay(delay);
+            }
+            return;
+        }
+           static async Task Main()
             {
                 await Task.Delay(1000);
 
-                Console.WriteLine("Guess a Number! 1.0.0\n");
+                Console.WriteLine("Guess a Number! 1.1.1\n");
 
 
 
 
                 await Task.Delay(1000);
-
+             
                 string text = "Welcome to the Guess a Number! (Made by Aruchomu).\n";
 
-                foreach (char c in text)
-                {
-                    Console.Write(c);
-                    await Task.Delay(80);
-                }
+                await Typetext(text, 80);
 
 
 
@@ -34,11 +40,7 @@ namespace Guess_a_Number_
 
                 string text1 = "\nThe rules are easy-peasy: AI picks some number and you need to guess it!";
 
-                foreach (char c in text1)
-                {
-                    Console.Write(c);
-                    await Task.Delay(80);
-                }
+                await Typetext(text1, 80);
 
 
 
@@ -46,14 +48,9 @@ namespace Guess_a_Number_
 
                 await Task.Delay(1000);
 
-                string text3 = "\nAlso, you have only 1 attempt, because I don't feel like to give you more! ;)";
+                string text3 = "\nAlso, you have only 5 attempts, because I don't feel like to give you more! ;)";
 
-                foreach (char c in text3)
-                {
-                    Console.Write(c);
-                    await Task.Delay(80);
-                }
-
+                await Typetext(text3, 80);
 
 
 
@@ -61,13 +58,9 @@ namespace Guess_a_Number_
 
                 await Task.Delay(1500);
 
-                string text2 = "\n\nPlease, press any key to start.";
+                string text2 = "\n\nPlease, press any key to start.\n";
 
-                foreach (char c in text2)
-                {
-                    Console.Write(c);
-                    await Task.Delay(80);
-                }
+                await Typetext(text2, 80);
 
 
 
@@ -92,10 +85,31 @@ namespace Guess_a_Number_
 
                 int user_input;
 
-            while (!int.TryParse(Console.ReadLine(), out user_input))   
-            {
-                Console.WriteLine("Invalid input. Please, enter your number again:");
-            }
+
+
+
+
+
+                while (!int.TryParse(Console.ReadLine(), out user_input) || user_input < 0 || user_input > 100)
+                {
+                   Console.WriteLine("Invalid input. Please, enter your number again:");
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+                byte attempts = 5;
+
+                while (attempts > 0)
+                {
 
 
                 if (a == user_input)
@@ -103,40 +117,51 @@ namespace Guess_a_Number_
                     await Task.Delay(4000);
 
 
-                    string b = "Correct! You guessed the number!\nIt was " + a + "!";
+                    string b = $"Correct! You guessed the number!\nIt was {a}!";
 
-                    foreach (char c in b)
-                    {
-                        Console.Write(c);
-                        await Task.Delay(80);
-                    }
+                    await Typetext(b, 80);
 
+                    
 
-
-                    Console.WriteLine("\n\nPress any key to exit...");
-
-                    Console.ReadKey();
+                    break;
                 }
                 else
                 {
-                    await Task.Delay(4000);
+                    attempts--;
 
 
-                    string d = "NOPE! That's not it.\nIt was " + a + "!";
-
-                    foreach (char c in d)
+                    if (attempts > 0)
                     {
-                        Console.Write(c);
-                        await Task.Delay(80);
+                        await Task.Delay(4000);
+
+                        string k = $"Nopey! You have {attempts} attempts left.\nPlease, enter your number again:";
+                        await Typetext(k, 80);
+
+                        while (!int.TryParse(Console.ReadLine(), out user_input) || user_input < 0 || user_input > 100)
+                        {
+                            Console.WriteLine("Invalid input. Please, enter your number again:\n");
+                        }
+                    }
+                    else
+                    {
+                        await Task.Delay(4000);
+                        string d = $"NOPE! That's not it.\nIt was {a}!";
+                        await Typetext(d, 80);
                     }
 
-
-
-                    Console.WriteLine("\n\nPress any key to exit...");
-
-                    Console.ReadKey();
+                
                 }
+
+
+
+
+                
             }
+
+            Console.WriteLine("\n\nPress any key to exit...");
+
+            Console.ReadKey();
+        }
         }
     }
 
